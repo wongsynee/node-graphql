@@ -1,45 +1,23 @@
 import { ApolloServer } from "apollo-server";
-import { useMockDB } from 'workshop-graphql-data-uploader';
+import { useMockDB } from "workshop-graphql-data-uploader";
 
-import {
-  baseTypes,
-  movieTypes,
-  movieResolvers,
-  ratingTypes,
-  ratingResolver,
-} from './config'
+import { baseTypes, movieTypes, ratingTypes } from "./types";
+
+import { movieResolvers, ratingResolver } from "./resolvers";
 
 useMockDB().then(async dbClient => {
-  // Create server
-  // Example hardcoded data
-  // movies: (obj, params, context) => [
-    // {
-    //   id: '1',
-    //   title: 'Terminator'
-    // },
-    // {
-    //   id: '2',
-    //   title: 'Saving Private Ryan'
-    // }
-  // ]
   const apolloServer = new ApolloServer({
-    typeDefs: [
-      baseTypes,
-      movieTypes,
-      ratingTypes,
-    ],
+    typeDefs: [baseTypes, movieTypes, ratingTypes],
     context: {
-      dbClient,
+      dbClient
     },
     // Object assign is a shallow merge of two objects (the top layer)
     resolvers: Object.assign(movieResolvers, ratingResolver)
-  })
+  });
 
   // Run the server
-  apolloServer.listen()
+  apolloServer.listen();
 });
-
-
 
 // STEP 1:
 // Create baseTypes
@@ -51,7 +29,7 @@ useMockDB().then(async dbClient => {
 // - Query movies, and resolve movies
 // - Type Movie { id, title }
 // - movies Query resolver
-// - define ApolloServer `movieService` context 
+// - define ApolloServer `movieService` context
 // - add type definitions for all properties
 
 // STEP 3:
@@ -80,3 +58,16 @@ useMockDB().then(async dbClient => {
 
 // STEP 8:
 // Add dataLoader
+
+// Create server
+// Example hardcoded data
+// movies: (obj, params, context) => [
+// {
+//   id: '1',
+//   title: 'Terminator'
+// },
+// {
+//   id: '2',
+//   title: 'Saving Private Ryan'
+// }
+// ]
